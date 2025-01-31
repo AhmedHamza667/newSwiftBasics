@@ -21,7 +21,7 @@ import UIKit
 //    }
 //    print("Hello \(name)")
 //}
-
+//
 //checkName(opt)
 //print(opt ?? "No name")
 
@@ -45,13 +45,13 @@ import UIKit
 //    print("sum is \(added)")
 //}
 //addition(2, 4)
-//
+
 //func doSquare(num:Int)-> Int{  // return func
 //    let square =  num * num
 //    return square
 //}
 //print(doSquare(num: 6))
-//
+
 //func makeSquare(num: inout Int){
 //    num = num * num
 //}
@@ -76,14 +76,14 @@ import UIKit
 
 // control statements
 // if else
-//var temp = 18
+//var temp = 30
 //if temp >= 25{
 //    print("It is hot")
 //} else {
 //    print("It is cold")
 //}
 
-// switch statement
+ //switch statement
 //func checkScore(score:Int){
 //    switch score {
 //    case 0..<50:
@@ -98,14 +98,14 @@ import UIKit
 //        print("Invalid Socre")
 //    }
 //}
-//checkScore(score: 88)
+//checkScore(score: 80)
 
 // guard let
-func checkAge(_ age:Int){
-    guard age >= 18 else{
-        print("you are not legal age")
-        return
-    }
-        print("you are legal age")
-}
-checkAge(18)
+//func checkAge(_ age:Int){
+//    guard age >= 18 else{
+//        print("you are not legal age")
+//        return
+//    }
+//        print("you are legal age")
+//}
+//checkAge(18)
