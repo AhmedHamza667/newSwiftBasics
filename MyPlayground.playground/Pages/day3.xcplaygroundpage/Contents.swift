@@ -137,27 +137,6 @@ import Foundation
 //let carModel = person.car?.model // Returns nil (person has no car)
 //print(carModel) // nil
 
-
-
-//protocol myProtocol{ // all child classes should have these functions
-//    func doSomething()
-//    func doSomethingElse()
-//}
-//class myClass:myProtocol{
-//    var speed:Double = 0.0
-//    func doSomething() {
-//        print("some task")
-//        speed+=1
-//        print(self.speed)
-//
-//    }
-//    func doSomethingElse() {
-//        print("some other task")
-//    }
-//}
-//var c1 = myClass()
-//c1.doSomething()
-//c1.doSomething()
 // extention
 //let num = 6
 //extension Int {
@@ -165,7 +144,7 @@ import Foundation
 //        return self * self
 //    }
 //}
-//let s = "hello"
+//let s = "hello world"
 //extension String {
 //    func capital() -> String {
 //        return self.uppercased()
@@ -177,92 +156,78 @@ import Foundation
 //print(num.square());
 //print(s.capital())
 //print(s.reverse())
+//
+//extension Double {
+//    func celciusToFahrenheit() -> Double {
+//        return (self * 9.0 / 5.0) + 32.0
+//    }
+//    func fahrenheitToCelcius() -> Double {
+//        return (self - 32.0) * 5.0 / 9.0
+//    }
+//}
+//let weatherinF = 77.0
+//let weatherinC = 30.0
+//print("\(weatherinC) celcius in fahrenheit is \(weatherinC.celciusToFahrenheit())")
+//print("\(weatherinF) fahrenheit in celcius is \(weatherinF.fahrenheitToCelcius())")
 
-// do extention for class
+// extention for classes
+//class dog{
+//    var name:String = "Jack"
+//    var age:Int = 5
+//    func bark(){
+//        print("woof woof")
+//    }
+//}
+//var myDog = dog()
+//myDog.bark()
+//extension dog{
+//    func sleep(){
+//        print("\(self.name) is sleeping zzzzzz")
+//    }
+//}
+//myDog.sleep()
 
-//protocol
-/*
- Protocol- Its a blueprint for set of functions or properties, which needs to be implemented when protocol is confrimed on class,struct or enum
- Protocol doesn;t have implemantion
- declartation or funcitons and properties
- Protocols doesnt have there own memory storage
- 
- its Basically signature of methods defined in a body of scope
- 
- //its also called as Interface in java
- */
 
-//protocol MyProtocol {
-//    func doSomeTask()
-//    func doAnotherTask()
-//}
-//
-//class MyClass: MyProtocol {
-//    func doSomeTask(){
-//        print("some task")
-//    }
-//    
-//    func doAnotherTask(){
-//        print("doAnotherTask")
-//    }
-//    
-//}
-//let c1  = MyClass()
-////c1.doSomeTask()
-////c1.doAnotherTask()
-//
-//protocol Servicing{
-//    func doRepair()
-//}
-//protocol Cleaning{
-//    func wash()
-//}
-//protocol Driving{
-//    //func
-//    func applyBreaks()
-//    mutating func aclerate(speed:Double)
-//    
-//    //computed property
-//    var speed:Double{get set}
-//}
-//extension Driving{
-//    func applyBreaks(){
-//        print("applying Breaks")
-//    }
-//}
-//class Vehical:Driving{
-//    var speed:Double = 0.0
-//
-//    func aclerate(speed:Double){
-//        print("aclerate by \(speed)")
-//    }
-//    
-//}
-//let v1 = Vehical()
-////v1.aclerate(speed: 10)
-////v1.applyBreaks()
-//typealias Operating = Servicing & Cleaning // protocol composition
-//
-////typealias Codeable = Encodable & Decodable
-//
-//struct Truck: Driving,Operating{
-//    func doRepair() {
-//        print("doRepair")
-//    }
-//    
-//    func wash() {
-//        print("wash")
-//
-//    }
-//    
-//    var speed: Double = 10.0
-//    
-//    mutating func aclerate(speed: Double) {
-//        self.speed = self.speed +  speed
-//        print("current speed is = \(self.speed)")
-//    }
-//    
-//}
-//var t1 = Truck(speed: 20)
-//t1.aclerate(speed: 30)
-//t1.applyBreaks()
+//protocols
+protocol team{
+    var teamName: String {get set}
+    var foundedYear: Int {get set}
+}
+protocol winning{
+    var totalWins: Int {get set}
+    mutating func won()
+}
+protocol losing{
+    var totalLosses: Int {get set}
+    mutating func lost()
+}
+//typealias teamData = team & winning & losing // using protocol composition
+struct teamA: team, winning, losing{
+    var teamName: String
+    var foundedYear: Int
+    var totalWins: Int
+    var totalLosses: Int
+
+    mutating func won() {
+        self.totalWins += 1
+        print("\(self.teamName) won and the total wins is \(self.totalWins)")
+        if self.totalWins == 5{
+            print("\(self.teamName) won the league")
+        }
+    }
+    
+    mutating func lost() {
+        self.totalLosses += 1
+        print("\(self.teamName) lost and the total losses is \(self.totalLosses)")
+        if self.totalLosses == 5{
+            print("\(self.teamName) is out of the league")
+        }
+    }
+}
+var ManCity = teamA(teamName: "Man City", foundedYear: 1894, totalWins: 0, totalLosses: 0)
+ManCity.won()
+ManCity.lost()
+ManCity.won()
+ManCity.won()
+ManCity.won()
+ManCity.won()
