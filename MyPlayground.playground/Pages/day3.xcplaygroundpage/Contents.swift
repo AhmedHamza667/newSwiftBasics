@@ -5,16 +5,12 @@ import Foundation
 // 1. Encpsulation - hiding data from direct access
 // 2. Inheritance - Inheriting properties and methods from another class (only single level Inheritance)
 // 3. Polymorphisim - having many forms or multiple implenations
-// 3. Abstraction - Exposing only required details
+// 4. Abstraction - Exposing only required details
 // Class - cant copy a class to another class both will be same address unlike struct
-// Inheritance / override
-// private vs fileprivare
-// stored (regular), computed (everytime), and lazy property (only once)
-// Protocols!!!
 
 //class Person {
-//    fileprivate var name: String // only accessible
-//    fileprivate var address: String
+//    fileprivate var name: String // only accessible in same file
+//    private var address: String // can't be accessed directly
 //    var gender: Character
 //    var isWorking: Bool
 //    var age: Int
@@ -39,18 +35,18 @@ import Foundation
 //person1.work()
 //person2.work()
 //
-// Class student inheritance from person
+//// Class student inheritance from person
 //class Student:Person{
 //    private var grade:Int // new var
 //    init(grade: Int, name: String, address: String, age: Int, gender: Character, isWorking: Bool) {
-//        self.grade = grade
-//        super.init(name: name, address: address, age: age, gender: gender, isWorking: isWorking)
+//        self.grade = grade // initialize the new var
+//        super.init(name: name, address: address, age: age, gender: gender, isWorking: isWorking) // initialize the rest of variables
 //    }
 //    func studying(){
 //        print("\(self.name) studying and is in grade \(self.grade)")
 //    }
 //}
-//let st1 = Student(grade: 12, name: "Manhace", address: "manhacea 2e", age: 23, gender: "M", isWorking: true)
+//let st1 = Student(grade: 12, name: "Mike", address: "102 Richmond Av", age: 18, gender: "M", isWorking: true)
 //st1.studying()
 
 // struct - similar to classes doesn't support Inheritance, imutable by default (doesnt update but u can add keyword mutating) no need for initializer
@@ -201,13 +197,12 @@ protocol losing{
     var totalLosses: Int {get set}
     mutating func lost()
 }
-//typealias teamData = team & winning & losing // using protocol composition
-struct teamA: team, winning, losing{
+typealias teamData = team & winning & losing // using protocol composition
+struct teamA: teamData{
     var teamName: String
     var foundedYear: Int
     var totalWins: Int
     var totalLosses: Int
-
     mutating func won() {
         self.totalWins += 1
         print("\(self.teamName) won and the total wins is \(self.totalWins)")
@@ -215,7 +210,6 @@ struct teamA: team, winning, losing{
             print("\(self.teamName) won the league")
         }
     }
-    
     mutating func lost() {
         self.totalLosses += 1
         print("\(self.teamName) lost and the total losses is \(self.totalLosses)")
