@@ -2,7 +2,7 @@
 
 import Foundation
 
-//// enum
+// enum
 //enum trafficLight{
 //    case green
 //    case yellow
@@ -18,7 +18,7 @@ import Foundation
 //        }
 //    }
 //    }
-//let signal = trafficLight.yellow
+//let signal = trafficLight.red
 //print(signal.action())
 //
 //// assosiated type enum
@@ -67,29 +67,29 @@ import Foundation
 
 
 // Generic Stack - first in last out
-//struct Stack<T>{
-//    private var items: [T] = []
-//    mutating func push(_ element: T){
-//        items.append(element)
-//    }
-//    mutating func pop(){
-//        items.removeLast()
-//    }
-//    var isEmpty: Bool{
-//        if items.count == 0{
-//            return true
-//        }
-//        return false
-//    }
-//    func printStack(){
-//        if (self.isEmpty){
-//            print("Stack is empty")
-//        }
-//        else{
-//            print("Elements of stack: \(items)")
-//        }
-//    }
-//}
+struct Stack<T>{
+    private var items: [T] = []
+    mutating func push(_ element: T){
+        items.append(element)
+    }
+    mutating func pop(){
+        items.removeLast()
+    }
+    var isEmpty: Bool{
+        if items.count == 0{
+            return true
+        }
+        return false
+    }
+    func printStack(){
+        if (self.isEmpty){
+            print("Stack is empty")
+        }
+        else{
+            print("Elements of stack: \(items)")
+        }
+    }
+}
 //var stack1 = Stack<Int>()
 //stack1.printStack()
 //stack1.push(1)
@@ -160,9 +160,18 @@ func closeApps(tasks: [String], completion:@escaping ([String]) -> Void){
     print("End of function")
 }
 
-// calling function
-closeApps(tasks: ["Skype", "Zoom", "Teams", "Chrome"]) { tasks in
-    for app in tasks{
-        print("\(app) has been closed successfully")
-    }
-}
+//// calling function
+//closeApps(tasks: ["Skype", "Zoom", "Teams", "Chrome"]) { tasks in
+//    for app in tasks{
+//        print("\(app) has been closed successfully")
+//    }
+//}
+
+// same as -->
+//closeApps(tasks: ["Skype", "Zoom", "Teams", "Chrome"], completion: { tasks in
+//    for app in tasks{
+//          print("\(app) has been closed successfully")
+//      }
+//
+//})
+
