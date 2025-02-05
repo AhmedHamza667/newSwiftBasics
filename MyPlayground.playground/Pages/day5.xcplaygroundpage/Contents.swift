@@ -9,13 +9,13 @@ import Foundation
 //var numbers = [1, 2, 3, 4, 5, 6]
 //print("Original array: \(numbers)")
 //var stringNumbers = numbers.map { "Number: \($0)" }
-//print("Converted to a string array: \(stringNumbers)")
+//print("String array: \(stringNumbers)")
 //// get word count for fruits
 //var fruits = ["apple", "banana", "orange", "grape"]
 //print("Original array: \(fruits)")
 //var wordLength = fruits.map { "\($0) word count is: \($0.count)" }
-//print("Uppercased array: \(wordLength)")
-//
+//print("Word count: \(wordLength)")
+
 //struct Employee{
 //    var name: String
 //    var employeeId: Int
@@ -29,9 +29,11 @@ import Foundation
 //    Employee(name: "Mike", employeeId: 5, dept: "IT"),
 //    Employee(name: "Zack", employeeId: 6, dept: "IT")
 //]
-// get only names
+//// get only names
 //let employeeNames = employees.map{$0.name}
 //print(employeeNames)
+//let employeesInIT = employees.filter{$0.dept == "IT"}
+//print(employeesInIT.map{$0.name}) // get names only
 
 // Transforming a Dictionary into a Flat List
 //var Teams: [String: String] = ["Team A": "Ahmed", "Team B": "Alex", "Team C": "Eve"]
@@ -39,15 +41,13 @@ import Foundation
 //print(allPlayes)
 
 //// filter
-//let employeesInIT = employees.filter{$0.dept == "IT"}
-//print(employeesInIT.map{$0.name}) // print only names!
 //
 //// sort
 //var dictArray = [("Ahmed", 80), ("Alex", 90), ("Charlie", 77), ("David", 92), ("Eve", 65)]
 //
 //// Sort the array based on the score
 //dictArray.sort { $0.1 > $1.1 }
-//
+////
 //print(dictArray)
 
 //// reduce - just returns one single value
@@ -150,7 +150,7 @@ import Foundation
 //    }
 //    return "Successfully Logged In"
 //}
-//
+
 //do{ // do catch try if error suspected
 //    try login(email: "ahmed@test.com", password: "Password")
 //    print("Success")
