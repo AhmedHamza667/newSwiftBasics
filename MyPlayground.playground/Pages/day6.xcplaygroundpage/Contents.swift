@@ -2,10 +2,10 @@
 
 import Foundation
 // Copy on write (COW)- a memory optmization technique by swift to save memory, until you modify a copied element it refares to the same internal memory location
-//func printAddr(address o: UnsafeRawPointer ) {
-//    print(String(format: "%p", Int(bitPattern: o)))
-//}
-//
+func printAddr(address o: UnsafeRawPointer ) {
+    print(String(format: "%p", Int(bitPattern: o)))
+}
+
 //var array1: [Int] = [0, 1, 2, 3]
 //var array2 = array1
 //print("Original addresses:")
@@ -15,7 +15,6 @@ import Foundation
 //print("New addresses:")
 //printAddr(address: array1)
 //printAddr(address: array2)
-
 //class People{
 //    var personList: [String] = []
 //    init(personList: [String]) {
