@@ -2,84 +2,118 @@
 
 import Foundation
 // Copy on write (COW)- a memory optmization technique by swift to save memory, until you modify a copied element it refares to the same internal memory location
-//var array1 = [1,2,3,4,5]
-//var array2 = array1 // same location as arr1
-//array2.append(6) // new location alocated
+//func printAddr(address o: UnsafeRawPointer ) {
+//    print(String(format: "%p", Int(bitPattern: o)))
+//}
+//
+//var array1: [Int] = [0, 1, 2, 3]
+//var array2 = array1
+//print("Original addresses:")
+//printAddr(address: array1)
+//printAddr(address: array2)
+//array2.append(4)  // new address gets allocated here
+//print("New addresses:")
+//printAddr(address: array1)
+//printAddr(address: array2)
 
-// But!! if you modify the orginal array also a new location will be alocated to array 2
-//array1.append(50)
-
-// Strong, weak, unowned, weak self for closure
-//class Person{ // fix error here
-//    var name: String
-//    var greet:(()->Void)?
-//    init(name: String) {
-//        self.name = name
-//        print("Class is allocated")
+//class People{
+//    var personList: [String] = []
+//    init(personList: [String]) {
+//        self.personList = personList
+//        print("Memory is allocated")
 //    }
 //    deinit {
-//        print("Class is deallocated")
-//    }
-//    func doInitalSetUp(){
-//        greet = { [weak self] in
-//            print("Hello, my name is \(self.name)")
-//        }
+//        print("Memory is released")
 //    }
 //}
-//var p1:Person? = Person(name: "Ahmed")
-//p1.greet?()
-//p1.doInitalSetUp()
-//p1.greet?()
-//p1 = nil
+//var list1: People? = People(personList: ["Ahmed", "Alex", "Matthew"])
+//var list2 = list1 // Both list1 and list2 reference the same object
+//print(list1?.personList)
+//print(list2?.personList)
+//
+//list1?.personList.append("New name") // Changes affect both references
+//print(list1?.personList)
+//print(list2?.personList)
+//list1 = nil // Memory not released yet
+//list2 = nil // deinit gets called here
 
-// capture list - used in closure
-//var counter = 1
-//counter += 1
-//let update = { [counter] in // capute from before the closure and save inside the scope
-//    print("Counter is \(counter)")
+// Strong, weak, unowned, weak self for closure
+//class Person{
+//    var name:String
+//    var pet:Animal?
+//    init(name: String, pet: Animal? = nil) {
+//        self.name = name
+//        self.pet = pet
+//        print("Person initialized")
+//    }
+//    deinit {
+//        print("Person deinitialized")
+//    }
 //}
-//counter = 4
-//update()
+//class Animal{
+//    var name:String
+//    weak var owner:Person?
+//    init(name: String, owner: Person? = nil) {
+//        self.name = name
+//        self.owner = owner
+//        print("Animal initialized")
+//    }
+//    deinit {
+//        print("Animal deinitialized")
+//    }
+//}
+//var person1:Person? = Person(name: "Ahmed") // init and deinit no problem
+//var pet1:Animal? = Animal(name: "Dog")
+//person1 = nil
+//pet1 = nil
 
-protocol Shape{
-    associatedtype Area // diffrent var type for each
-    mutating func calculateArea() -> Area
-}
-class Square: Shape{
-    typealias Area = Double
-    private var side: Double = 2.0
-    var area: Area {
-        return calculateArea()
-    }
-     func calculateArea() -> Area {
-        return side * side
-    }
-}
+//var person2:Person? = Person(name: "Mark")
+//var pet2:Animal? = Animal(name: "cat")
+//person2?.pet = pet2 // person2 now has a pet
+//pet2?.owner = person2 // pet 2 now has an owner
+//person2 = nil  // person 2 will not get deinitalized unless animal has weak var owner
+//pet2 = nil
 
-class Rectangle: Shape{
-    typealias Area = Int
-    private var length: Int = 2
-    private var width: Int = 4
-    var area: Area {
-        return calculateArea()
-    }
-     func calculateArea() -> Area {
-        return length * width
-    }
-}
+//protocol Storage{
+//    associatedtype ItemType
+//    var items: [ItemType] {get set}
+//    mutating func store(_ item: ItemType)
+//    mutating func remove() -> ItemType?
+//    func listItems()
+//}
+//extension Storage{ // function implementation
+//    mutating func store(_ item: ItemType) {
+//        items.append(item)
+//    }
+//    mutating func remove() -> ItemType? {
+//        guard !items.isEmpty else { return nil }
+//        return items.removeLast()
+//    }
+//    func listItems() {
+//        print("Stored items \(items)")
+//    }
+//}
+//class Books: Storage{
+//    typealias ItemType = String
+//    var items: [ItemType] = []
+//}
+//class Numbers: Storage{
+//    typealias ItemType = Int
+//    var items: [ItemType] = []
+//}
+//var books = Books()
+//books.store("The Alchemist")
+//books.store("To Kill a Mockingbird")
+//books.store("The Great Gatsby")
+//books.listItems()
+//
+//var numbers = Numbers()
+//numbers.store(1)
+//numbers.store(100)
+//numbers.store(1000)
+//numbers.remove()
+//numbers.listItems()
 
-class Circle: Shape{
-    typealias Area = String
-        var area: Area {
-        return calculateArea()
-    }
-     func calculateArea() -> Area {
-        return "Circle Area"
-    }
-}
-var sq = Square()
-print(sq.calculateArea()) // double
-var rec = Rectangle()
-print(rec.calculateArea()) // int
-var cir = Circle()
-print(cir.calculateArea()) // string
+
+
+
