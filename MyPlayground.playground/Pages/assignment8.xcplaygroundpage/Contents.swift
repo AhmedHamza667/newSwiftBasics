@@ -121,6 +121,7 @@ class BankAccount: CheckingAccount {
             print("No transactions found.")
             return
         }
+        print("=========================")
         print("Transaction History for Account \(accountNumber):")
         for transaction in transactionHistory {
                     let dateFormatter = DateFormatter()
@@ -133,13 +134,20 @@ class BankAccount: CheckingAccount {
     }
     
     func transfer(to: Account, amount: Double) {
-        if self.balance < amount {
-            print("Account does not have enough funds")
+        if self.balance - amount < overdraftLimit {
+            print("Insufficient funds for transfer.")
             return
         }
         self.balance -= amount
         to.balance += amount
-        print("An amount of \(amount) has been transferred successfully")
+
+        let transferOut = Transaction(type: .transfer(to: to, amount: amount), date: Date())
+        let transferIn = Transaction(type: .deposit(amount: amount), date: Date())
+
+        self.transactionHistory.append(transferOut)
+        to.transactionHistory.append(transferIn)
+
+        print("Transferred \(amount) to account \(to.accountNumber).")
     }
 }
 
@@ -200,3 +208,5 @@ savingAccount1.transfer(to: savingAccount2, amount: 2000) // Unsuccessful transf
 savingAccount1.transfer(to: savingAccount2, amount: 200) // Successful transfer
 savingAccount1.showBalance() // 1550 - 200 = 1350
 savingAccount2.showBalance() // 500 + 200 = 700
+savingAccount1.showTransactionHistory() // show the transfer in the transactions
+savingAccount2.showTransactionHistory()
