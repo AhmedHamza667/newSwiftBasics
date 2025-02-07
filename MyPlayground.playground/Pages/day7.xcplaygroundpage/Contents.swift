@@ -5,79 +5,132 @@ import Foundation
 // construction injection
 // property injection
 // method injection
-//class WebServiceManager  {
+
+//protocol PaymentProcessor{
+//    func processPayment(amount: Double) -> String
+//}
+//class PayPalPaymentProcessor: PaymentProcessor{
 //    init(){
-//        print("Init for WebServiceManager")
+//        print("PayPalPaymentProcessor initalized")
 //    }
-//    func doAPICall(urlString: String) {
-//        print("Api call in progress")
-//        print(urlString)
+//    func processPayment(amount: Double) -> String {
+//        return "Payment processed through PayPal with amout of \(amount)"
 //    }
 //    deinit{
-//        print("deinit for WebServiceManager")
+//        print("PayPalPaymentProcessor deinitialized")
 //    }
 //}
+//class StripePaymentProcessor: PaymentProcessor{
+//    init(){
+//        print("Stripe initalized")
+//    }
+//    func processPayment(amount: Double) -> String {
+//        return "Payment processed through Stripe with amout of \(amount)"
+//    }
+//    deinit{
+//        print("StripePaymentProcessor deinitialized")
+//    }
+//}
+//class ViewController{
+//    let paymentProcessor: PaymentProcessor
+//    init(paymentProcessor: PaymentProcessor) {
+//        self.paymentProcessor = paymentProcessor
+//        print("ViewController initalized")
+//
+//    }
+//    func makePayment(_ amount: Double) -> String{
+//        return paymentProcessor.processPayment(amount: amount)
+//    }
+//    deinit{
+//        print("ViewController deinitialized")
+//    }
+//}
+//var payment1:ViewController? = ViewController(paymentProcessor: PayPalPaymentProcessor())
+//payment1?.makePayment(200.3)
+//// or payment2?.makePayment(100.3, with: StripePaymentProcessor())
+//var payment2:ViewController? = ViewController(paymentProcessor: StripePaymentProcessor())
+//payment2?.makePayment(100.3)
+//payment1 = nil // both viewcontroller and paypal will be deinit
+//payment2 = nil
 
-//class ViewController {
-//    let webServiceManage : WebServiceManager
-//    var apiString : String?
+
+
+//class Car {
+//    private var speed: Int = 0
 //    
-//    init(webServiceManage: WebServiceManager) {
-//        self.webServiceManage = webServiceManage
-//        print("Init for ViewController")
+//    func accelerate() {
+//        speed += 10
 //    }
-//    func submitBtn(){
-//        webServiceManage.doAPICall(urlString: self.apiString ?? "")
+//    func printSpeed() {
+//        print(speed)
 //    }
-//    func anotherSubmitBtn(urlString: String, productId: String){
-//        webServiceManage.doAPICall(urlString: urlString + "?productId=" + productId)
-//    }
-//    deinit{
-//        print("deinit for ViewController")
-//    }
-
-
 //}
-////construction injection
-//var v1:ViewController? = ViewController(webServiceManage: WebServiceManager()) // both initalized here
-//v1?.apiString = "https://google.com" // property injection
-//v1?.submitBtn()
-//v1?.anotherSubmitBtn(urlString: "https://yahoo.com", productId: "21") // method injection
-//v1?.anotherSubmitBtn(urlString: "https://facebook.com", productId: "221") // method injection
-//v1 = nil // both deinit because it's one way relationship
+//
+//let car = Car()
+////print(car.speed) // Error
+////car.speed = 100 // Error: speed is inaccessible
+//car.accelerate()
+//car.accelerate()
+//car.accelerate()
+//car.printSpeed()
 
 
-// dependency inversion - injecting your dependency using protocol
-// 1. construction injection
-// 2. property injection
-// 3. method injection
-protocol DBoperation{
-    func saveData()
-}
+//POP- Portocol Oriented Programming
 
-class DatabaseManager: DBoperation{
-    func saveData(){
-        print("Data saved to database")
-    }
-}
-class ViewController{
-    let dbManager: DBoperation
-    init(dbManager: DBoperation) { // construction injection using protocol
-        self.dbManager = dbManager
-    }
-    func saveValuesInDatabase(){
-        dbManager.saveData()
-    }
-}
-let v1 = ViewController(dbManager: DatabaseManager())
-v1.saveValuesInDatabase()
-
-class FireBaseManager: DBoperation{
-    func saveData() {
-        print("Data saved to firebase")
-    }
-}
-
-let v2 = ViewController(dbManager: FireBaseManager())
-v2.saveValuesInDatabase()
-
+//protocol Task{
+//    var title: String {get set}
+//    func performTask()
+//}
+//protocol SchedulableMeeting{
+//    var isSchedulable: Bool {get set}
+//    var meetingTime: String? {get set}
+//}
+//protocol DebuggableCode{
+//    var isDebuggable: Bool {get set}
+//    var doneBy: String? {get set}
+//}
+//class CodingTask: Task, DebuggableCode{
+//    var title: String
+//    var isDebuggable: Bool
+//    var doneBy: String?
+//    
+//    init(title: String, isDebuggable: Bool, doneBy: String? = nil) {
+//        self.title = title
+//        self.isDebuggable = isDebuggable
+//        self.doneBy = doneBy
+//    }
+//    func performTask() {
+//        print("Performing Coding Task: \(self.title). Debuggable: \(self.isDebuggable), Done by: \(self.doneBy ?? "N/A")")
+//    }
+//}
+//class MeetingTask: Task, SchedulableMeeting{
+//    var title: String
+//    var isSchedulable: Bool = false
+//    var meetingTime: String?
+//    init(title: String, meetingTime: String? = nil) {
+//        self.title = title
+//        self.meetingTime = meetingTime
+//    }
+//    func performTask() {
+//        print("Scheduling Meeting: \(self.title) at \(self.meetingTime ?? "TBD")")
+//    }
+//}
+//class TaskManager{
+//    private var task: Task
+//    init(task: Task) {
+//        self.task = task
+//    }
+//    func performTask() {
+//        task.performTask()
+//    }
+//}
+//
+//let codingTask = CodingTask(title: "Refactor Code", isDebuggable: true, doneBy: "02/23/2025")
+//let meetingTask = MeetingTask(title: "Project Kickoff", meetingTime: "10:30 AM")
+//
+//let codingTaskManager = TaskManager(task: codingTask)
+//let meetingTaskManager = TaskManager(task: meetingTask)
+//
+//// Executing tasks
+//codingTaskManager.performTask()
+//meetingTaskManager.performTask()
