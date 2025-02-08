@@ -194,25 +194,25 @@ class Bank {
 //account1.showTransactionHistory()
 
 // Test for Saving Account
-var savingAccount1 = ClientSavings(balance: 1000) // 1000 in account
-savingAccount1.addYearlyInterest() // Added 5% interest 1000 + 50
-savingAccount1.showBalance() // 1050
-savingAccount1.showTransactionHistory()
-savingAccount1.addTransaction(transaction: Transaction(type: .deposit(amount: 500), date: Date())) // 1050 + 500 = 1550
-savingAccount1.showBalance() // $1550
+//var savingAccount1 = ClientSavings(balance: 1000) // 1000 in account
+//savingAccount1.addYearlyInterest() // Added 5% interest 1000 + 50
+//savingAccount1.showBalance() // 1050
+//savingAccount1.showTransactionHistory()
+//savingAccount1.addTransaction(transaction: Transaction(type: .deposit(amount: 500), date: Date())) // 1050 + 500 = 1550
+//savingAccount1.showBalance() // $1550
 
 // Trying to transfer between saving accounts
-var savingAccount2 = ClientSavings(balance: 500)
-savingAccount1.transfer(to: savingAccount2, amount: 2000) // Unsuccessful transfer
-savingAccount1.transfer(to: savingAccount2, amount: 200) // Successful transfer
-savingAccount1.showBalance() // 1550 - 200 = 1350
-savingAccount2.showBalance() // 500 + 200 = 700
-savingAccount1.showTransactionHistory() // show the transfer in the transactions
-savingAccount2.showTransactionHistory()
-
-// testing class Bank of diffrent accounts
-var chaseBank =  Bank()
-chaseBank.addAccount(savingAccount1) // 1350
-chaseBank.addAccount(savingAccount2) // 700
-print(chaseBank.totalBalance()) // 1350 + 700 = 2050
-print(chaseBank.getAccount(index: 0)?.balance) // first account balance 1350
+//var savingAccount2 = ClientSavings(balance: 500)
+//savingAccount1.transfer(to: savingAccount2, amount: 2000) // Unsuccessful transfer
+//savingAccount1.transfer(to: savingAccount2, amount: 200) // Successful transfer
+//savingAccount1.showBalance() // 1550 - 200 = 1350
+//savingAccount2.showBalance() // 500 + 200 = 700
+//savingAccount1.showTransactionHistory() // show the transfer in the transactions
+//savingAccount2.showTransactionHistory()
+//
+//// testing class Bank of diffrent accounts
+//var chaseBank =  Bank()
+//chaseBank.addAccount(savingAccount1) // 1350
+//chaseBank.addAccount(savingAccount2) // 700
+//print(chaseBank.totalBalance()) // 1350 + 700 = 2050
+//print(chaseBank.getAccount(index: 0)?.balance) // first account balance 1350
