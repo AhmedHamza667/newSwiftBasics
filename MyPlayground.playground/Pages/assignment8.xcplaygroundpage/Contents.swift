@@ -5,7 +5,8 @@ protocol Account: AnyObject {
     var accountNumber: Int { get }
     var routingNumber: Int { get }
     var transactionHistory: [Transaction] { get set }
-    func deposit(amount: Double)
+    func addTransaction(transaction: Transaction)
+    func deposit(amount: Double) // optional
     func withdraw(amount: Double)
     func transfer(to: Account, amount: Double)
     func showBalance()
@@ -54,7 +55,7 @@ enum TransactionType {
 
 struct Transaction {
     let type: TransactionType
-    let date: Date
+    let date: Date // optional
 }
 
 class BankAccount: CheckingAccount {
@@ -111,7 +112,6 @@ class BankAccount: CheckingAccount {
             
             let overdraftTransaction = Transaction(type: .overdraftFee(amount: 25.00), date: Date())
             transactionHistory.append(overdraftTransaction)
-            
             balance -= 25.00
         }
     }
@@ -121,7 +121,7 @@ class BankAccount: CheckingAccount {
             print("No transactions found.")
             return
         }
-        print("=========================")
+        print("===================================================")
         print("Transaction History for Account \(accountNumber):")
         for transaction in transactionHistory {
                     let dateFormatter = DateFormatter()
@@ -144,7 +144,7 @@ class BankAccount: CheckingAccount {
         let transferOut = Transaction(type: .transfer(to: to, amount: amount), date: Date())
         let transferIn = Transaction(type: .deposit(amount: amount), date: Date())
 
-        self.transactionHistory.append(transferOut)
+        self.transactionHistory.append(transferOut) // append the transaction
         to.transactionHistory.append(transferIn)
 
         print("Transferred \(amount) to account \(to.accountNumber).")
@@ -158,7 +158,6 @@ class ClientSavings: BankAccount, SavingsAccount {
         let interest = balance * interestRate
         //balance += interest
         print("Your balance has increased by \(interest) due to interest.")
-//        transactionHistory.append(Transaction(type: .interest(amount: interest), date: Date()))
         addTransaction(transaction: Transaction(type: .interest(amount: interest), date: Date()))
     }
 }
@@ -187,7 +186,7 @@ class Bank {
 //account1.addTransaction(transaction: Transaction(type: .withdrawal(amount: 50), date: Date())) // 200 - 50 = 150.0
 //account1.showBalance() // 150.0
 //account1.addTransaction(transaction: Transaction(type: .withdrawal(amount: 150), date: Date())) // 150 - 150 = 0
-//account1.showBalance() // 100
+//account1.showBalance() // 0
 //account1.addTransaction(transaction: Transaction(type: .withdrawal(amount: 12), date: Date())) // 0 - 12 = -12
 //account1.showBalance() // -12 not overdrafted yet
 //account1.addTransaction(transaction: Transaction(type: .withdrawal(amount: 50), date: Date())) // -12 - 50 = -62 (Overdrafted! and a fee of $25 has been applied)
@@ -210,3 +209,10 @@ savingAccount1.showBalance() // 1550 - 200 = 1350
 savingAccount2.showBalance() // 500 + 200 = 700
 savingAccount1.showTransactionHistory() // show the transfer in the transactions
 savingAccount2.showTransactionHistory()
+
+// testing class Bank of diffrent accounts
+var chaseBank =  Bank()
+chaseBank.addAccount(savingAccount1) // 1350
+chaseBank.addAccount(savingAccount2) // 700
+print(chaseBank.totalBalance()) // 1350 + 700 = 2050
+print(chaseBank.getAccount(index: 0)?.balance) // first account balance 1350
