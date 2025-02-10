@@ -23,6 +23,7 @@ import Foundation
 // 2. seriel queue (custom queue) for us to create our own queue
 // 3. global queue concurrent queues given by OS and are shared by system
 
+// main queue
 //DispatchQueue.main.async{
 //    print("This code will be excuted on main thread")
 //    // ex: tableview.reloadDate()
@@ -39,3 +40,49 @@ import Foundation
 //    }
 //    
 //}
+
+//seriel queue (custom queue) for us to create our own queue
+//executes one task at a time in the order they are added
+//let myQueue = DispatchQueue(label: ".com.ba.accessSpecifer.myQueue")
+////add task
+//myQueue.async{
+//    print("Task 1 started")
+//    print("Task 1 in progress")
+//    print("Task 1 finished")
+//}
+//
+//myQueue.async{
+//    print("Task 2 started")
+//    print("Task 2 in progress")
+//    print("Task 2 finished")
+//}
+
+// comcurrent queue
+// can excute multiple tasks simultansuly but it will NOT follow the order they are added
+// (attributes: .concurrent) is the diffrence between seriel and concurrent
+let comcurrentQueue = DispatchQueue(label: ".com.ba.accessSpecifer.comcurrentQueue", attributes: .concurrent)
+comcurrentQueue.async{
+    print("Task 1 started")
+    for i in 0...10{
+        print(i)
+    }
+    print("Task 1 finished")
+}
+
+
+comcurrentQueue.async{
+    print("Task 2 started")
+    for i in 20...30{
+        print(i)
+    }
+    print("Task 2 finished")
+}
+
+comcurrentQueue.async{
+    print("Task 3 started")
+    for i in 40...50{
+        print(i)
+    }
+    print("Task 3 finished")
+}
+

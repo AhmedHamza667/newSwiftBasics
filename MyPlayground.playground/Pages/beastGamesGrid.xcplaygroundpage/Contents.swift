@@ -20,7 +20,7 @@ class TrapGrid {
     func fillBoxes() {
         var remainingUnsafeBoxes = unSafeBoxes
         while remainingUnsafeBoxes > 0{
-            var i = Int.random(in: 0 ..< numOfRows)  
+            var i = Int.random(in: 0 ..< numOfRows)
             var j = Int.random(in: 0 ..< numOfCols)
             if boxes[i][j] == "🟢" { // to prevent getting the same number
                 boxes[i][j] = "🔴"
