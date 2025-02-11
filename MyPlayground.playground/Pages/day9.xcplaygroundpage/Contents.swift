@@ -125,26 +125,27 @@ import Foundation
 
 // Dispatch Groups
 
-let dispatchGroup = DispatchGroup()
+//let dispatchGroup = DispatchGroup()
+//
+//dispatchGroup.enter()
+//print("Fetching data from API 1")
+//sleep(2)
+//print("Data recived from API 1")
+//dispatchGroup.leave()
+//
+//dispatchGroup.enter()
+//print("Fetching data from API 2")
+//sleep(2)
+//print("Data recived from API 2")
+//dispatchGroup.leave()
+//
+//dispatchGroup.enter()
+//print("Fetching data from API 3")
+//sleep(2)
+//print("Data recived from API 3")
+//dispatchGroup.leave()
+//
+//dispatchGroup.notify(queue: DispatchQueue.main) {
+//    print("All API data has been fetched.")
+//}
 
-dispatchGroup.enter()
-print("Fetching data from API 1")
-sleep(2)
-print("Data recived from API 1")
-dispatchGroup.leave()
-
-dispatchGroup.enter()
-print("Fetching data from API 2")
-sleep(2)
-print("Data recived from API 2")
-dispatchGroup.leave()
-
-dispatchGroup.enter()
-print("Fetching data from API 3")
-sleep(2)
-print("Data recived from API 3")
-dispatchGroup.leave()
-
-dispatchGroup.notify(queue: DispatchQueue.main) {
-    print("All API data has been fetched.")
-}
