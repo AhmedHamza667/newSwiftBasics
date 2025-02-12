@@ -10,79 +10,63 @@ Rules:
 1. synchronous functions cannot simply call async function directly
 2. async func can call other async and regular func
 */
-// Task group - allow us to excute multiple concurrent tasks and await for the result can be processed parrally
 
-//func getApiData() async{
-//    print("logic to fetch data from api")
-//    sleep(4) // everything stops until the function finishes
+//func fetchAllUsers() async -> String{
+//    print("Fetching user data...")
+//    sleep(2)
+//    return "User: Ahmed"
+//}
+//func fetchUserPosts() async -> [String]{
+//    print("Fetching user posts...")
+//    sleep(2)
+//    return ["Post 1: Hello World", "Post 2: Swift is awesome"]
 //}
 //
-//Task{ // in playground task block supports async calls 
-//    await getApiData()
-//    print("Api call completed")
+//func fetchAllData() async{
+//    var user = await fetchAllUsers()
+//    var posts = await fetchUserPosts()
+//    print("\(user) - \(posts)")
 //}
-//
-//func doSomeCalc(){ // not working you should wrap in Task {}
-//    Task{
-//        await getApiData()
-//    }
+//Task{
+//    await fetchAllData()
 //}
-//doSomeCalc()
 
 
 /*
- Study this!!!
- TaskGroup- This allows us to execute multiple concurrent tasks and await for there results.useful for performing multiple indepdenact tasks that can be procssed parallelly
+  TaskGroup- This allows us to execute multiple concurrent tasks and await for their results. useful for performing multiple indepdenact tasks that can be procssed parallelly
  */
 
-//func gettingDataFromAPI(url:String) async -> String{
+//func gettingUserPosts(user:String) async -> String{
 //    
 //    try? await Task.sleep(for: .seconds(2))
-//    return "Data from \(url)"
+//    return "Posts from \(user)"
 //}
 //
-//func fetchDataFromMultipleAPi() async{
+//func fetchFromMultipleUsers() async{
 //    
 //    await withTaskGroup(of:String.self) { group in
 //        
-//        let apis = ["https://example.com/ap1","https://example.com/ap2","https://example.com/ap3","https://example.com/ap4"]
+//        let users = ["Ahmed","Max","Alice","Rubin"]
 //        
-//        for url in apis{
+//        for user in users{
 //            group.addTask{
-//                await gettingDataFromAPI(url: url)
+//                await gettingUserPosts(user: user)
 //            }
 //        }
 //        var outputsArray:[String] = []
 //        
-//        for await result in group{
-//            outputsArray.append(result)
+//        for await posts in group{
+//            outputsArray.append(posts)
 //        }
 //        
-//        print("Final data for all api cals ")
+//        print("Final data for all users ")
 //        outputsArray.forEach{print($0)}
 //    }
 //}
 //Task{
-// //   await fetchDataFromMultipleAPi()
+//   await fetchFromMultipleUsers()
 //}
-//
-//
-//func easyTaskGroup() async{
-//    
-//    await withTaskGroup(of:String.self) { group in
-//        group.addTask { "Task 1" }
-//        group.addTask { "Task 2" }
-//        group.addTask { "Task 3" }
-//        group.addTask { "Task 4" }
-//        
-//        for await result in group{
-//          print(result)
-//        }
-//    }
-//}
-//Task{
-//    await easyTaskGroup()
-//}
+
 
 
 // race condition - when 2 or more threads access the same shared resource, can lead to unwanted behavior or corrupt data
@@ -92,114 +76,128 @@ Rules:
 // actors, same as classes but allows access to vars one at a time, provides thread safety but doesn't support inheartence (prevents data race conditions)
 // by default supports async await concurrency
 
-//actor bankAccount{
-//    var balance:Double = 0
-//    
-//    func deposit(_ amount:Double){
-//        balance += amount
-//        print("Deposited amount: \(amount), new balance: \(balance)")
+
+// solution 1 using seriel queue
+//class TicketBooking: @unchecked Sendable {
+//    var availableTickets:Int
+//    let queue = DispatchQueue(label: "myQueue")
+//    init(availableTickets: Int) {
+//        self.availableTickets = availableTickets
 //    }
-//    
-//    func withdraw(_ amount:Double){
-//        balance -= amount
-//        print("Withdrawn amount: \(amount), new balance: \(balance)")
-//
+//    func bookTicket(amount:Int){
+//        queue.async{
+//            print("Trying to book \(amount) tickets")
+//            if amount > self.availableTickets{
+//                print("Sorry, not enough tickets available")
+//            }
+//            else{
+//                self.availableTickets -= amount
+//                print("Booked \(amount) tickets, \(self.availableTickets) tickets left")
+//            }
+//        }
 //    }
 //}
-//
-//
-//func easyTaskGroup() async{
-//    let b1 = bankAccount()
-//    await withTaskGroup(of:Void.self) { group in
-//        group.addTask { await b1.deposit(100) }
-//        group.addTask { await b1.deposit(200) }
-//        group.addTask { await b1.withdraw(300) }
-//        group.addTask { await b1.deposit(50) }
-//        //await group.waitForAll()
-//
+
+//var t1 = TicketBooking(availableTickets: 10)
+//for _ in 0..<7{
+//    Task{
+//        var i = Int.random(in: 1...5)
+//        t1.bookTicket(amount: i)
 //    }
-//    print("All bank operation excuted")
 //}
-//Task{
-//    await easyTaskGroup()
+
+// solution 2 using actor
+//actor HotelBooking{
+//    var availableRooms:Int
+//    init(availableRooms: Int) {
+//        self.availableRooms = availableRooms
+//    }
+//    func bookRoom() {
+//        print("Trying to book a room")
+//        if availableRooms == 0{
+//            print("Sorry, no rooms available")
+//        }
+//        else{
+//            availableRooms -= 1
+//            print("Booked a room, \(availableRooms) rooms left")
+//        }
+//    }
 //}
-//
-//
-//// use lock/unlock or semaphore
-//
-//
-//class bankAccount{
-//    let semaphore = DispatchSemaphore(value: 1) // allows one task at a time
-//    let myLock = NSLock()
-//    var balance:Double = 0
-//    
-//    func deposit(_ amount:Double){
+//var hotel1 = HotelBooking(availableRooms: 4)
+//for _ in 0..<5{
+//    Task{
+//        await hotel1.bookRoom()
+//    }
+//}
+// solution 3 using lock or semaphore
+//class LeagueTable{
+//    private var totalPoints:Int = 0
+//    private var myLock = NSLock()
+//    //private var semaphore = DispatchSemaphore(value: 1)
+//    func won(){
 //        myLock.lock()
-//        balance += amount
+//        //semaphore.wait()
+//        totalPoints += 3
+//        print("Won a match, total points: \(totalPoints)")
+//        //semaphore.signal()
 //        myLock.unlock()
-//        print("Deposited amount: \(amount), new balance: \(balance)")
 //    }
-//    
-//    func withdraw(_ amount:Double){
-//        semaphore.wait()
-//        balance -= amount
-//        print("Withdrawn amount: \(amount), new balance: \(balance)")
-//        semaphore.signal()
+//    func draw(){
+//        myLock.lock()
+//        //semaphore.wait()
+//        totalPoints += 1
+//        print("Draw a match, total points: \(totalPoints)")
+//        //semaphore.signal()
+//        myLock.unlock()
+//    }
+//    func lost(){
+//        // not needed here
+//        print("Lost a match, total points: \(totalPoints)")
 //    }
 //}
+//let league = LeagueTable()
+//// simulate concurrent execution
+//let queue = DispatchQueue(label: "matchQueue", attributes: .concurrent)
 //
+//for _ in 0..<5 {
+//    queue.async {
+//        league.won()
+//    }
+//    queue.async {
+//        league.draw()
+//    }
+//    queue.async {
+//        league.lost()
+//    }
+//}
 
-// deadlock - this occures when two or more threads are blocked forever because they are each waiting for resourses that other thread holds
-// it's a circular dependency amoung threads will make the app freeze or preformance issue or crash
-
-//let queue1 = DispatchQueue(label: "Queue 1")
-//let queue2 = DispatchQueue(label: "Queue 2")
-//queue1.async {
-//    print("Task 1 started")
-//    queue2.sync {
-//        print("Task 2 started")
-//    }
-//    print("Task 1 finished")
-//}
-//
-//
-//queue2.async {
-//    print("Task 2 started")
-//    queue1.sync {
-//        print("Task 1 started")
-//    }
-//    print("Task 2 finished")
-//}
 
 
 // DispatchBarier - used to manage concurrent read write operations on shared resourses
-// fix the following
-class Database: @unchecked Sendable{
-    private var records = [String]()
-    private var concurrentQueue = DispatchQueue(label: "concurrentQueue", attributes: .concurrent)
-    
-    func readRecords(taskNumber: Int) -> String{
-        concurrentQueue.async { [weak self] in
-            if taskNumber < records.count{
-                print("Getting record: \(self.records[taskNumber])")
-                return self?.records[taskNumber] ?? 0
-            }
-        }
-        return ""
-    }
-    func saveRecords(_ newRecords:String){
-        concurrentQueue.async(flags: .barrier){ [weak self] in
-            self?.records.append(newRecords) ?? 0
-            print("New record got added: \(newRecords)")
-        }
-    }
-}
-
-let db = Database()
-for i in 0..<15{
-    db.saveRecords("Record \(i)")
-}
-
-for i in 0..<15{
-    db.readRecords(taskNumber: i)
-}
+//let concurrentQueue = DispatchQueue(label: "com.example.concurrentQueue", attributes: .concurrent)
+//
+//var dataSize = 0
+//
+//for _ in 0..<5 {
+//    concurrentQueue.async {
+//        print("Fetching some old data")
+//        dataSize += 1
+//        print("Old data fetched data size: \(dataSize)")
+//    }
+//}
+//// Barrier!!! everthing has to be excuted first, blocking other concurrent tasks
+//
+//concurrentQueue.async(flags: .barrier) {
+//    print("Modifying database blocking other concurrent tasks...")
+//    dataSize = 100
+//    print("Database has been modified, data size: \(dataSize)")
+//}
+//
+//// more tasks after the barrier block
+//for _ in 0..<5 {
+//    concurrentQueue.async {
+//        print("Fetching data after database modification...")
+//        dataSize += 1
+//        print("New data fetched, shared resource: \(dataSize)")
+//    }
+//}
